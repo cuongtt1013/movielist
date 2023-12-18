@@ -20,7 +20,7 @@ class SearchRepository {
 
     private var request: SearchApi = RetrofitFactory.buildServiceSearch(SearchApi::class.java)
 
-    suspend fun fetchMovie(page: Int, s: String): Resource<SearchResponse> =
+    suspend fun fetchMovie(page: Int, s: String) =
         callApi { request.fetchMovies(page = page, s = s) }
 
     companion object {

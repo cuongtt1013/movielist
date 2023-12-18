@@ -3,6 +3,7 @@ package com.example.movielist.repository
 import com.example.movielist.model.SearchResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -21,8 +22,15 @@ object RetrofitFactory {
         chain.proceed(build)
     }
 
+    private fun loggingInterceptor() : HttpLoggingInterceptor {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        return loggingInterceptor
+    }
+
     private val clientSearch =
         OkHttpClient().newBuilder()
+            .addInterceptor(loggingInterceptor())
             .addInterceptor(searchInterceptor)
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .writeTimeout(30000, TimeUnit.MILLISECONDS)
